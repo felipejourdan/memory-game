@@ -1,20 +1,23 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
-import org.w3c.dom.css.Rect;
+import com.codeforall.online.simplegraphics.pictures.Picture;
 
 public class Card {
 
     private String frontImage;
     private String backImage;
-    boolean isRevealed;
-    boolean isMatched;
+    boolean isRevealed = false;
+    boolean isMatched = false;
+    private Rectangle rectangle;
+    private String id;
 
-    public Card(String frontImage, String backImage, boolean isRevealed, boolean isMatched) {
-
-        this.frontImage = frontImage;
-        this.backImage = backImage;
-        this.isRevealed = isRevealed;
-        this.isMatched = isMatched;
+    public Card(int x, int y, int size, String id) {
+        this.rectangle = new Rectangle(x,y,size,size);
+        Picture picture = new Picture(x, y, "1.png" );
+        picture.draw();
+/*        this.rectangle.setColor(Color.GRAY);
+        this.rectangle.fill();*/
+        this.id = id;
     }
 
     public String getFrontImage() {
@@ -25,6 +28,11 @@ public class Card {
         this.frontImage = frontImage;
     }
 
+    public String getId(){
+        return id;
+    }
+
+/*
     public String getBackImage() {
         return backImage;
     }
@@ -35,6 +43,7 @@ public class Card {
         rectangle.fill();
         this.backImage = backImage;
     }
+*/
 
     public boolean isRevealed() {
         return isRevealed;
