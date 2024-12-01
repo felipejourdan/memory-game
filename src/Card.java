@@ -16,6 +16,7 @@ public class Card {
     boolean isMatched = false;
     private Rectangle rectangle;
     private String id;
+    private Picture picture;
 
     // Lista estatica para armazenar imagens
     private static List<String> pairedImages;
@@ -72,19 +73,6 @@ public class Card {
         return id;
     }
 
-/*
-    public String getBackImage() {
-        return backImage;
-    }
-
-    public void setBackImage() {
-        Rectangle rectangle = new Rectangle();
-        rectangle.setColor(Color.GRAY);
-        rectangle.fill();
-        this.backImage = backImage;
-    }
-*/
-
     public boolean isRevealed() {
         return isRevealed;
     }
@@ -100,4 +88,22 @@ public class Card {
     public void setMatched(boolean matched) {
         isMatched = matched;
     }
+
+    public int getTop(){
+        return picture.getY();
+    }
+
+    public int getBottom(){
+        return picture.getY() + picture.getHeight();
+    }
+
+    public int getRight(){
+        return picture.getX() + picture.getWidth();
+    }
+
+    public int getLeft(){
+        return picture.getX();
+    }
+
+
 }
