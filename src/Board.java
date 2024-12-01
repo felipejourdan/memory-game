@@ -3,6 +3,8 @@ import com.codeforall.online.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Board {
 
@@ -15,38 +17,42 @@ public class Board {
     public Board(int cols, int rows, int cardSize){
         this.cols = cols;
         this.rows = rows;
-        /*Rectangle board = new Rectangle(10, 10, 400, 400);*/
         initBoard(cardSize);
     }
 
     public void initBoard(int cardSize) {
 
-        ArrayList<String> cardId = new ArrayList<>();
+        //Lista de Ids para as cartas
+        ArrayList<String> cardIdList = new ArrayList<>();
+        Map<String, String> idToImageMap = new HashMap<>();
 
-        for(int i = 1; i <= (cols*rows) / 2;i++){
-            cardId.add("card" + i);
-            cardId.add("card" + i);
+        for(int i = 1; i <= (cols * rows) / 2; i++){
+            String image = Card.getNextImage(); // obtem a proxima imagem
+            String cardId = "card" + i;
+
+            cardIdList.add(cardId);
+            cardIdList.add(cardId);
+
+            idToImageMap.put(cardId, image);
         }
 
-        Collections.shuffle(cardId); // "embalaralha ordem das cartas"
+        // "embalaralha ordem das cartas"
+        Collections.shuffle(cardIdList);
 
         int index = 0;
-
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
                 int x = col * (cardSize + 10);
                 int y = row * (cardSize + 10);
 
-               cards.add(new Card(x, y, cardSize, cardId.get(index)));
-                 System.out.println(cards.get(index).getId());
-                 index++;
+                String cardId = cardIdList.get(index);
+                String image = idToImageMap.get(cardId);
+
+                cards.add(new Card(x,y,cardSize,cardId, image));
+                index++;
             }
         }
     }
-
-/*    public int getCellSize() {
-        return cellSize;
-    }*/
 
     public int getCols() {
         return this.cols;
@@ -55,40 +61,5 @@ public class Board {
     public int getRows() {
         return this.rows;
     }
-
-
-/*
-    public int rowToY(int row) {
-        return PADDING + cellSize * row;
-    }
-
-    public int columnToX(int column) {
-        return PADDING + cellSize * column;
-    }
-
-*/
-
-
-
-
-/*    public void initGrid() {
-        card = new Card[9];
-        int i;
-        for (i = 0; i < card.length; i++) {
-            card[i].getBackImage();
-*//*            for(int j = 0; j < card.length; j++){
-
-            }*//*
-
-        }
-        return ;
-    }
-
- *//*   Rectangle grid = new Rectangle(10, 10 , 400, 400);
-        grid.draw();
-
-    Rectangle card1 = new Rectangle(20, 40, 70, 50);
-        card1.setColor(Color.GRAY);
-        card1.fill();*/
 }
 

@@ -2,6 +2,12 @@ import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class Card {
 
     private String frontImage;
@@ -11,13 +17,47 @@ public class Card {
     private Rectangle rectangle;
     private String id;
 
-    public Card(int x, int y, int size, String id) {
+    // Lista estatica para armazenar imagens
+    private static List<String> pairedImages;
+    private static int currentImageIndex = 0;
+
+
+    // bloco estatico para iniciar imagens
+    static{
+        String[] imageIndex = new String[19];
+        for(int i = 0; i < imageIndex.length; i++){
+            imageIndex[i] = "resources/" + i + ".png";
+        }
+        // associa 1 imagem para cada par de ID
+        pairedImages = new ArrayList<>();
+        for(String image : imageIndex){
+            pairedImages.add(image);
+            pairedImages.add(image);
+        }
+
+        //embaralha par de imagens
+        Collections.shuffle(pairedImages);
+    }
+
+    public static String getNextImage(){
+        if(currentImageIndex < pairedImages.size()){
+            return pairedImages.get(currentImageIndex++);
+        }else{
+            throw new IllegalStateException("All images has been used");
+        }
+    }
+
+    public Card(int x, int y, int size, String id, String backImage) {
         this.rectangle = new Rectangle(x,y,size,size);
-        Picture picture = new Picture(x, y, "1.png" );
-        picture.draw();
-/*        this.rectangle.setColor(Color.GRAY);
-        this.rectangle.fill();*/
         this.id = id;
+        this.backImage = backImage;
+
+        Picture picture = new Picture(x, y, this.backImage);
+        picture.draw();
+    }
+
+    public String backImage(){
+        return backImage;
     }
 
     public String getFrontImage() {
