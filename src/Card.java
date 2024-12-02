@@ -17,9 +17,10 @@ public class Card {
     private String backImage = "resources/back.png";
     boolean isRevealed = false;
     boolean isMatched = false;
-    private String id;
-    private Picture picture;
+    private int id;
+    protected Picture picture;
     private MyMouse mouse;
+    Board board;
 
 //    // Lista estatica para armazenar imagens
 //    private static List<String> pairedImages;
@@ -51,14 +52,15 @@ public class Card {
 //        }
 //    }
 
-    public Card(int x, int y, int size, String id) {
+    public Card(int x, int y, int size, int id, Board board) {
         this.id = id;
         this.backImage = backImage;
+        this.board = board;
 
         this.picture = new Picture(x, y, this.backImage);
         picture.draw();
         mouse = new MyMouse(this);
-        setFrontImage("resources" + id + "png");
+        this.frontImage = "resources/" + id + ".png";
     }
 
     public String backImage(){
@@ -73,7 +75,7 @@ public class Card {
         this.frontImage = frontImage;
     }
 
-    public String getId(){
+    public int getId(){
         return id;
     }
 
