@@ -1,4 +1,5 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.mouse.Mouse;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Board {
     private int rows; // linha
     private ArrayList<Card> cards = new ArrayList<>();
 
-    public Board(int cols, int rows, int cardSize){
+    public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
         this.rows = rows;
         initBoard(cardSize);
@@ -24,16 +25,16 @@ public class Board {
 
         //Lista de Ids para as cartas
         ArrayList<String> cardIdList = new ArrayList<>();
-        Map<String, String> idToImageMap = new HashMap<>();
+        //Map<String, String> idToImageMap = new HashMap<>();
 
         for(int i = 1; i <= (cols * rows) / 2; i++){
-            String image = Card.getNextImage(); // obtem a proxima imagem
-            String cardId = "card" + i;
+//            String image = Card.getNextImage(); // obtem a proxima imagem
+//            String cardId = "card" + i;
 
-            cardIdList.add(cardId);
-            cardIdList.add(cardId);
+            cardIdList.add("card" + i);
+            cardIdList.add("card" + i);
 
-            idToImageMap.put(cardId, image);
+            //idToImageMap.put(cardId, image);
         }
 
         // "embalaralha ordem das cartas"
@@ -46,9 +47,9 @@ public class Board {
                 int y = row * (cardSize + 10);
 
                 String cardId = cardIdList.get(index);
-                String image = idToImageMap.get(cardId);
+                //String image = idToImageMap.get(cardId);
 
-                cards.add(new Card(x,y,cardSize,cardId, image));
+                cards.add(new Card(x,y,cardSize,cardId));
                 index++;
             }
         }
@@ -61,5 +62,6 @@ public class Board {
     public int getRows() {
         return this.rows;
     }
+
 }
 
