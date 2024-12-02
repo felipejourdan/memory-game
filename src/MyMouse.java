@@ -9,6 +9,7 @@ public class MyMouse implements MouseHandler {
     private Mouse mouse;
     private Card card;
 
+
     public MyMouse(Card card) {
         this.card = card;
         init();
@@ -24,9 +25,12 @@ public class MyMouse implements MouseHandler {
 
         if(mouseEvent.getY() >= card.getTop() && mouseEvent.getY() <= card.getBottom() && mouseEvent.getX() >= card.getLeft() && mouseEvent.getX() <= card.getRight()) {
             System.out.println("Clicked image: " + card.getId());
+            card.board.handleClick(card.getId());
         };
-            //System.out.println("Clicked image: " + card.getId());
+    }
 
+    public void revealCard() {
+        card.setRevealed(true);
     }
 
     @Override

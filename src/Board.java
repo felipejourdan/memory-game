@@ -14,6 +14,8 @@ public class Board {
     private int cols; // coluna
     private int rows; // linha
     private ArrayList<Card> cards = new ArrayList<>();
+    protected boolean firstCard = false;
+    protected boolean secondCard = false;
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -24,21 +26,23 @@ public class Board {
     public void initBoard(int cardSize) {
 
         //Lista de Ids para as cartas
-        ArrayList<String> cardIdList = new ArrayList<>();
+        ArrayList<Integer> cardIdList = new ArrayList<>();
         //Map<String, String> idToImageMap = new HashMap<>();
 
         for(int i = 1; i <= (cols * rows) / 2; i++){
 //            String image = Card.getNextImage(); // obtem a proxima imagem
 //            String cardId = "card" + i;
 
-            cardIdList.add("card" + i);
-            cardIdList.add("card" + i);
+            cardIdList.add(i);
+            cardIdList.add(i);
 
             //idToImageMap.put(cardId, image);
         }
 
+        System.out.println(cardIdList);
         // "embalaralha ordem das cartas"
         Collections.shuffle(cardIdList);
+        System.out.println(cardIdList);
 
         int index = 0;
         for(int row = 0; row < rows; row++){
@@ -46,10 +50,10 @@ public class Board {
                 int x = col * (cardSize + 10);
                 int y = row * (cardSize + 10);
 
-                String cardId = cardIdList.get(index);
+                int cardId = cardIdList.get(index);
                 //String image = idToImageMap.get(cardId);
-
-                cards.add(new Card(x,y,cardSize,cardId));
+                System.out.println(cardId);
+                cards.add(new Card(x,y,cardSize,index, this));
                 index++;
             }
         }
@@ -61,6 +65,19 @@ public class Board {
 
     public int getRows() {
         return this.rows;
+    }
+
+    public void handleClick(int id) {
+
+        if(!secondCard){
+            if(!firstCard){
+                firstCard = true;
+                cards.get(id).picture.load(cards.get(id).getFrontImage());
+            } else {
+                secondCard = true;
+                cards.get(id).picture.load(cards.get(id).getFrontImage());
+            }
+        }
     }
 
 }
