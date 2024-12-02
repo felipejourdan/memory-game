@@ -1,5 +1,8 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.mouse.Mouse;
+import com.codeforall.online.simplegraphics.mouse.MouseEvent;
+import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 
 import java.sql.Array;
@@ -11,50 +14,51 @@ import java.util.List;
 public class Card {
 
     private String frontImage;
-    private String backImage;
+    private String backImage = "resources/back.png";
     boolean isRevealed = false;
     boolean isMatched = false;
-    private Rectangle rectangle;
     private String id;
     private Picture picture;
+    private MyMouse mouse;
 
-    // Lista estatica para armazenar imagens
-    private static List<String> pairedImages;
-    private static int currentImageIndex = 0;
+//    // Lista estatica para armazenar imagens
+//    private static List<String> pairedImages;
+//    private static int currentImageIndex = 0;
 
 
-    // bloco estatico para iniciar imagens
-    static{
-        String[] imageIndex = new String[19];
-        for(int i = 0; i < imageIndex.length; i++){
-            imageIndex[i] = "resources/" + i + ".png";
-        }
-        // associa 1 imagem para cada par de ID
-        pairedImages = new ArrayList<>();
-        for(String image : imageIndex){
-            pairedImages.add(image);
-            pairedImages.add(image);
-        }
+//    // bloco estatico para iniciar imagens
+//    static{
+//        String[] imageIndex = new String[19];
+//        for(int i = 0; i < imageIndex.length; i++){
+//            imageIndex[i] = "resources/" + i + ".png";
+//        }
+//        // associa 1 imagem para cada par de ID
+//        pairedImages = new ArrayList<>();
+//        for(String image : imageIndex){
+//            pairedImages.add(image);
+//            pairedImages.add(image);
+//        }
+//
+//        //embaralha par de imagens
+//        Collections.shuffle(pairedImages);
+//    }
+//
+//    public static String getNextImage(){
+//        if(currentImageIndex < pairedImages.size()){
+//            return pairedImages.get(currentImageIndex++);
+//        }else{
+//            throw new IllegalStateException("All images has been used");
+//        }
+//    }
 
-        //embaralha par de imagens
-        Collections.shuffle(pairedImages);
-    }
-
-    public static String getNextImage(){
-        if(currentImageIndex < pairedImages.size()){
-            return pairedImages.get(currentImageIndex++);
-        }else{
-            throw new IllegalStateException("All images has been used");
-        }
-    }
-
-    public Card(int x, int y, int size, String id, String backImage) {
-        this.rectangle = new Rectangle(x,y,size,size);
+    public Card(int x, int y, int size, String id) {
         this.id = id;
         this.backImage = backImage;
 
-        Picture picture = new Picture(x, y, this.backImage);
+        this.picture = new Picture(x, y, this.backImage);
         picture.draw();
+        mouse = new MyMouse(this);
+        setFrontImage("resources" + id + "png");
     }
 
     public String backImage(){
@@ -104,6 +108,5 @@ public class Card {
     public int getLeft(){
         return picture.getX();
     }
-
 
 }

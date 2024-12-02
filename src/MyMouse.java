@@ -9,6 +9,11 @@ public class MyMouse implements MouseHandler {
     private Mouse mouse;
     private Card card;
 
+    public MyMouse(Card card) {
+        this.card = card;
+        init();
+    }
+
     public void init(){
         mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
@@ -17,13 +22,11 @@ public class MyMouse implements MouseHandler {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
-        if(mouseEvent.getY() >= card.getTop() && mouseEvent.getY() <= card.getBottom() && mouseEvent.getX() >= card.getLeft() && mouseEvent.getX() <= card.getRight());
+        if(mouseEvent.getY() >= card.getTop() && mouseEvent.getY() <= card.getBottom() && mouseEvent.getX() >= card.getLeft() && mouseEvent.getX() <= card.getRight()) {
+            System.out.println("Clicked image: " + card.getId());
+        };
+            //System.out.println("Clicked image: " + card.getId());
 
-        System.out.println("mouse was clicked");
-    }
-
-    public void setCard(Card card){
-        this.card = card;
     }
 
     @Override
