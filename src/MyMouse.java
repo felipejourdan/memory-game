@@ -25,7 +25,7 @@ public class MyMouse implements MouseHandler {
 
         if(mouseEvent.getY() >= card.getTop() && mouseEvent.getY() <= card.getBottom() && mouseEvent.getX() >= card.getLeft() && mouseEvent.getX() <= card.getRight()) {
             System.out.println("Clicked image: " + card.getId());
-            card.board.handleClick(card.getId());
+            card.board.handleClick(card);
         };
     }
 

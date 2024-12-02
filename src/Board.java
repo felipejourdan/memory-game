@@ -14,8 +14,8 @@ public class Board {
     private int cols; // coluna
     private int rows; // linha
     private ArrayList<Card> cards = new ArrayList<>();
-    protected boolean firstCard = false;
-    protected boolean secondCard = false;
+    protected Card firstCard = null;
+    protected Card secondCard = null;
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -25,7 +25,6 @@ public class Board {
 
     public void initBoard(int cardSize) {
 
-        //Lista de Ids para as cartas
         ArrayList<Integer> cardIdList = new ArrayList<>();
         //Map<String, String> idToImageMap = new HashMap<>();
 
@@ -40,7 +39,6 @@ public class Board {
         }
 
         System.out.println(cardIdList);
-        // "embalaralha ordem das cartas"
         Collections.shuffle(cardIdList);
         System.out.println(cardIdList);
 
@@ -52,8 +50,8 @@ public class Board {
 
                 int cardId = cardIdList.get(index);
                 //String image = idToImageMap.get(cardId);
-                System.out.println(cardId);
-                cards.add(new Card(x,y,cardSize,index, this));
+                System.out.println("carta sendo criada com: " + cardId);
+                cards.add(new Card(x,y,cardSize, cardId, this));
                 index++;
             }
         }
@@ -67,17 +65,49 @@ public class Board {
         return this.rows;
     }
 
-    public void handleClick(int id) {
+    public void handleClick(Card clickedCard) {
+        if (secondCard == null) {
+            if (clickedCard.isMatched || clickedCard.isRevealed) {
+                System.out.println("carta ja revelada");
+                return;
+            }
 
-        if(!secondCard){
-            if(!firstCard){
-                firstCard = true;
-                cards.get(id).picture.load(cards.get(id).getFrontImage());
+            if (firstCard == null) {
+                clickedCard.setRevealed(true);
+                firstCard = clickedCard;
+                clickedCard.picture.load(clickedCard.getFrontImage());
             } else {
-                secondCard = true;
-                cards.get(id).picture.load(cards.get(id).getFrontImage());
+                clickedCard.setRevealed(true);
+                secondCard = clickedCard;
+                clickedCard.picture.load(clickedCard.getFrontImage());
+                isMatch();
             }
         }
+
+    }
+
+    public void isMatch() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (firstCard.getId() == secondCard.getId()) {
+                System.out.println("Par encontrado!");
+                firstCard.setMatched(true);
+                secondCard.setMatched(true);
+            } else {
+                firstCard.picture.load(firstCard.backImage());
+                secondCard.picture.load(secondCard.backImage());
+                firstCard.setRevealed(false);
+                secondCard.setRevealed(false);
+            }
+            firstCard = null;
+            secondCard = null;
+        }).start();
+
     }
 
 }
