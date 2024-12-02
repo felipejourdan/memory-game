@@ -111,4 +111,18 @@ public class Card {
         return picture.getX();
     }
 
+    public boolean canReveal() {
+        return !isRevealed && !isMatched;
+    }
+
+    public void reveal() {
+        setRevealed(true);
+        picture.load(frontImage);
+    }
+
+    public void hide() {
+        setRevealed(false);
+        picture.load(backImage);
+    }
+
 }
