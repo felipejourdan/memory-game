@@ -14,7 +14,7 @@ import java.util.List;
 public class Card {
 
     private String frontImage;
-    private String backImage = "resources/back.png";
+    private String backImage = "back.png";
     boolean isRevealed = false;
     boolean isMatched = false;
     private int id;
@@ -34,7 +34,7 @@ public class Card {
         rectangle.setColor(Color.RED);
         rectangle.draw();
         mouse = new MyMouse(this);
-        this.frontImage = "resources/" + id + ".png";
+        this.frontImage = id + ".png";
     }
 
     public String backImage(){
