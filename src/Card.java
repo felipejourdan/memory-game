@@ -22,35 +22,6 @@ public class Card {
     private MyMouse mouse;
     Board board;
 
-//    // Lista estatica para armazenar imagens
-//    private static List<String> pairedImages;
-//    private static int currentImageIndex = 0;
-
-
-//    // bloco estatico para iniciar imagens
-//    static{
-//        String[] imageIndex = new String[19];
-//        for(int i = 0; i < imageIndex.length; i++){
-//            imageIndex[i] = "resources/" + i + ".png";
-//        }
-//        // associa 1 imagem para cada par de ID
-//        pairedImages = new ArrayList<>();
-//        for(String image : imageIndex){
-//            pairedImages.add(image);
-//            pairedImages.add(image);
-//        }
-//
-//        //embaralha par de imagens
-//        Collections.shuffle(pairedImages);
-//    }
-//
-//    public static String getNextImage(){
-//        if(currentImageIndex < pairedImages.size()){
-//            return pairedImages.get(currentImageIndex++);
-//        }else{
-//            throw new IllegalStateException("All images has been used");
-//        }
-//    }
 
     public Card(int x, int y, int size, int id, Board board) {
         this.id = id;
@@ -59,6 +30,9 @@ public class Card {
 
         this.picture = new Picture(x, y, this.backImage);
         picture.draw();
+        Rectangle rectangle = new Rectangle(getLeft(), getTop(), picture.getWidth(), picture.getHeight());
+        rectangle.setColor(Color.RED);
+        rectangle.draw();
         mouse = new MyMouse(this);
         this.frontImage = "resources/" + id + ".png";
     }
@@ -109,6 +83,25 @@ public class Card {
 
     public int getLeft(){
         return picture.getX();
+    }
+
+    public boolean canReveal() {
+        return !isRevealed && !isMatched;
+    }
+
+    public void reveal() {
+        setRevealed(true);
+        picture.load(frontImage);
+    }
+
+    public void hide() {
+        setRevealed(false);
+        picture.load(backImage);
+    }
+
+    public boolean contains(int mouseX, int mouseY) {
+        return mouseX >= getLeft() && mouseX <= getRight() &&
+                mouseY >= getTop() && mouseY <= getBottom();
     }
 
 }

@@ -4,8 +4,6 @@ import com.codeforall.online.simplegraphics.mouse.MouseEventType;
 import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 
 public class MyMouse implements MouseHandler {
-
-    // representa o mouse
     private Mouse mouse;
     private Card card;
 
@@ -22,11 +20,12 @@ public class MyMouse implements MouseHandler {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
+        double mouseX = mouseEvent.getX();
+        double mouseY = mouseEvent.getY();
 
-        if(mouseEvent.getY() >= card.getTop() && mouseEvent.getY() <= card.getBottom() && mouseEvent.getX() >= card.getLeft() && mouseEvent.getX() <= card.getRight()) {
-            System.out.println("Clicked image: " + card.getId());
-            card.board.handleClick(card);
-        };
+        if (card.contains((int) mouseX, (int) mouseY)) {
+                card.board.handleClick(card);
+        }
     }
 
     public void revealCard() {

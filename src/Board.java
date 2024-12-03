@@ -1,7 +1,7 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 import com.codeforall.online.simplegraphics.mouse.Mouse;
 import com.codeforall.online.simplegraphics.pictures.Picture;
-
+import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,9 +38,7 @@ public class Board {
             //idToImageMap.put(cardId, image);
         }
 
-        System.out.println(cardIdList);
         Collections.shuffle(cardIdList);
-        System.out.println(cardIdList);
 
         int index = 0;
         for(int row = 0; row < rows; row++){
@@ -50,7 +48,6 @@ public class Board {
 
                 int cardId = cardIdList.get(index);
                 //String image = idToImageMap.get(cardId);
-                System.out.println("carta sendo criada com: " + cardId);
                 cards.add(new Card(x,y,cardSize, cardId, this));
                 index++;
             }
@@ -66,34 +63,20 @@ public class Board {
     }
 
     public void handleClick(Card clickedCard) {
-        if (secondCard == null) {
-            if (clickedCard.isMatched || clickedCard.isRevealed) {
-                System.out.println("carta ja revelada");
-                return;
-            }
+        if (secondCard == null && clickedCard.canReveal()) {
+            clickedCard.reveal();
 
             if (firstCard == null) {
-                clickedCard.setRevealed(true);
                 firstCard = clickedCard;
-                clickedCard.picture.load(clickedCard.getFrontImage());
             } else {
-                clickedCard.setRevealed(true);
                 secondCard = clickedCard;
-                clickedCard.picture.load(clickedCard.getFrontImage());
                 isMatch();
             }
         }
-
     }
 
     public void isMatch() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        Timer timer = new Timer(1000, e -> {
             if (firstCard.getId() == secondCard.getId()) {
                 System.out.println("Par encontrado!");
                 firstCard.setMatched(true);
@@ -106,9 +89,24 @@ public class Board {
             }
             firstCard = null;
             secondCard = null;
-        }).start();
+            if (checkVictory()) {
+                System.out.println("Você venceu!");
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    public boolean checkVictory() {
+        for (Card card : cards) {
+            if (!card.isMatched) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     }
 
-}
+
 
