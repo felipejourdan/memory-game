@@ -32,7 +32,6 @@ public class Card {
         this.x = x;
         this.picture = new Picture(x, y, this.backImage);
         picture.draw();
-        new Rectangle(x, y, size, size).draw();
         this.frontImage = id + ".png";
     }
 

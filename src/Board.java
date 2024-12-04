@@ -20,6 +20,8 @@ public class Board implements MouseHandler {
     private int cardSize;
     private int margin = 10;
     private Mouse mouse;
+    private Picture menu;
+    private boolean menuIsOn = false;
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -28,11 +30,16 @@ public class Board implements MouseHandler {
         this.cardSize = cardSize;
         this.mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
-        initBoard(cardSize);
-
+        init();
     }
 
-    public void initBoard(int cardSize) {
+    public void init(){
+        menu = new Picture(10, 10, "menu.png");
+        menu.draw();
+        menuIsOn = true;
+    }
+
+    public void startGame(int cardSize) {
 
         ArrayList<Integer> cardIdList = new ArrayList<>();
 
@@ -46,14 +53,19 @@ public class Board implements MouseHandler {
         int index = 0;
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                int x = col * (cardSize + margin);
-                int y = row * (cardSize + margin);
+                int x = (col * (cardSize + margin) + margin);
+                int y = (row * (cardSize + margin) + margin);
 
                 cards[row][col] = new Card(x, y, cardSize, cardIdList.get(index), this);
                 index++;
             }
-            System.out.println("segunda row: " + row);
         }
+
+        int xMenu = margin;
+        int yMenu = (int)(rows * (cardSize + margin) + margin);
+        new Rectangle(xMenu, yMenu,(cardSize * cols + (margin * rows)),100).draw();
+
+        menu.load("");
     }
 
     public int getCols() {
@@ -114,6 +126,11 @@ public class Board implements MouseHandler {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
+        if (menuIsOn) {
+            menuIsOn = false;
+            startGame(cardSize);
+        }
+
         // Coordenadas do clique
         int mouseX = (int) mouseEvent.getX();
 
