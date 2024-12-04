@@ -19,21 +19,20 @@ public class Card {
     boolean isMatched = false;
     private int id;
     protected Picture picture;
-    private MyMouse mouse;
     Board board;
+    int y;
+    int x;
 
 
     public Card(int x, int y, int size, int id, Board board) {
         this.id = id;
         this.backImage = backImage;
         this.board = board;
-
+        this.y = y;
+        this.x = x;
         this.picture = new Picture(x, y, this.backImage);
         picture.draw();
-        Rectangle rectangle = new Rectangle(getLeft(), getTop(), picture.getWidth(), picture.getHeight());
-        rectangle.setColor(Color.RED);
-        rectangle.draw();
-        mouse = new MyMouse(this);
+        new Rectangle(x, y, size, size).draw();
         this.frontImage = id + ".png";
     }
 
@@ -77,6 +76,10 @@ public class Card {
         return picture.getY() + picture.getHeight();
     }
 
+    public int getY() {
+        return y;
+    }
+
     public int getRight(){
         return picture.getX() + picture.getWidth();
     }
@@ -101,7 +104,7 @@ public class Card {
 
     public boolean contains(int mouseX, int mouseY) {
         return mouseX >= getLeft() && mouseX <= getRight() &&
-                mouseY >= getTop() && mouseY <= getBottom();
+                mouseY >= getTop() && mouseY <= getBottom() + 20;
     }
 
 }

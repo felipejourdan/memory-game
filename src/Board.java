@@ -1,5 +1,8 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 import com.codeforall.online.simplegraphics.mouse.Mouse;
+import com.codeforall.online.simplegraphics.mouse.MouseEvent;
+import com.codeforall.online.simplegraphics.mouse.MouseEventType;
+import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
 import java.util.ArrayList;
@@ -7,35 +10,35 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Board {
+public class Board implements MouseHandler {
 
-    /*public static final int PADDING = 10;*/
-    /*private int cellSize = 15;*/
     private int cols; // coluna
     private int rows; // linha
-    private ArrayList<Card> cards = new ArrayList<>();
+    private Card[][] cards = new Card[cols][rows];
     protected Card firstCard = null;
     protected Card secondCard = null;
+    private int cardSize;
+    private int margin = 10;
+    private Mouse mouse;
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
         this.rows = rows;
+        this.cards = new Card[rows][cols];
+        this.cardSize = cardSize;
+        this.mouse = new Mouse(this);
+        mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         initBoard(cardSize);
+
     }
 
     public void initBoard(int cardSize) {
 
         ArrayList<Integer> cardIdList = new ArrayList<>();
-        //Map<String, String> idToImageMap = new HashMap<>();
 
         for(int i = 1; i <= (cols * rows) / 2; i++){
-//            String image = Card.getNextImage(); // obtem a proxima imagem
-//            String cardId = "card" + i;
-
             cardIdList.add(i);
             cardIdList.add(i);
-
-            //idToImageMap.put(cardId, image);
         }
 
         Collections.shuffle(cardIdList);
@@ -43,14 +46,13 @@ public class Board {
         int index = 0;
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                int x = col * (cardSize + 10);
-                int y = row * (cardSize + 10);
+                int x = col * (cardSize + margin);
+                int y = row * (cardSize + margin);
 
-                int cardId = cardIdList.get(index);
-                //String image = idToImageMap.get(cardId);
-                cards.add(new Card(x,y,cardSize, cardId, this));
+                cards[row][col] = new Card(x, y, cardSize, cardIdList.get(index), this);
                 index++;
             }
+            System.out.println("segunda row: " + row);
         }
     }
 
@@ -98,15 +100,48 @@ public class Board {
     }
 
     public boolean checkVictory() {
-        for (Card card : cards) {
-            if (!card.isMatched) {
-                return false;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(!cards[i][j].isMatched()) {
+                    return false;
+                }
             }
+
         }
         return true;
     }
 
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        // Coordenadas do clique
+        int mouseX = (int) mouseEvent.getX();
+
+        int mouseY = (int) mouseEvent.getY() - 20;
+
+        // Calcula a linha e coluna do clique
+
+        int row = mouseY / (cardSize + margin);
+        System.out.println(mouseY + " / " + cardSize + " + " + margin + " = " + row);
+        int col = mouseX / (cardSize + margin);
+        System.out.println(mouseX + " / " + cardSize + " + " + margin + " = " + col);
+
+
+
+        // Verifica se a linha e coluna estão dentro dos limites do array
+        if (row >= 0 && row < rows && col >= 0 && col < cols) {
+            Card clickedCard = cards[row][col];
+            if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
+                System.out.println(cards[row][col].getId());
+                handleClick(clickedCard); // Processa a lógica do clique
+            }
+        }
     }
+
+    @Override
+    public void mouseMoved(MouseEvent mouseEvent) {
+    }
+}
 
 
 
