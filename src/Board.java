@@ -1,4 +1,5 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.graphics.Text;
 import com.codeforall.online.simplegraphics.mouse.Mouse;
 import com.codeforall.online.simplegraphics.mouse.MouseEvent;
 import com.codeforall.online.simplegraphics.mouse.MouseEventType;
@@ -22,6 +23,10 @@ public class Board implements MouseHandler {
     private Mouse mouse;
     private Picture menu;
     private boolean menuIsOn = false;
+    int xMenu;
+    int yMenu;
+    Alert alert;
+
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -30,6 +35,10 @@ public class Board implements MouseHandler {
         this.cardSize = cardSize;
         this.mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
+        this.xMenu = margin;
+        this.yMenu = (int)(rows * (cardSize + margin) + margin);
+        alert = new Alert(xMenu, yMenu);
+
         init();
     }
 
@@ -61,11 +70,8 @@ public class Board implements MouseHandler {
             }
         }
 
-        int xMenu = margin;
-        int yMenu = (int)(rows * (cardSize + margin) + margin);
-        new Rectangle(xMenu, yMenu,(cardSize * cols + (margin * rows)),100).draw();
-
-        menu.load("");
+        new Rectangle(xMenu, yMenu, (cardSize * cols + (margin * rows)),100).draw();
+        menu.delete();
     }
 
     public int getCols() {
@@ -90,9 +96,9 @@ public class Board implements MouseHandler {
     }
 
     public void isMatch() {
-        Timer timer = new Timer(1000, e -> {
+        Timer timer = new Timer(500, e -> {
             if (firstCard.getId() == secondCard.getId()) {
-                System.out.println("Par encontrado!");
+                alert.showAlert("Par encontrado!");
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
             } else {
@@ -103,9 +109,12 @@ public class Board implements MouseHandler {
             }
             firstCard = null;
             secondCard = null;
+            Timer timer2 = new Timer(500, f -> {
             if (checkVictory()) {
-                System.out.println("Você venceu!");
-            }
+                alert.showAlert("Você venceu!");
+            } });
+            timer2.setRepeats(false);
+            timer2.start();
         });
         timer.setRepeats(false);
         timer.start();
@@ -131,26 +140,16 @@ public class Board implements MouseHandler {
             startGame(cardSize);
         }
 
-        // Coordenadas do clique
         int mouseX = (int) mouseEvent.getX();
-
         int mouseY = (int) mouseEvent.getY() - 20;
 
-        // Calcula a linha e coluna do clique
-
         int row = mouseY / (cardSize + margin);
-        System.out.println(mouseY + " / " + cardSize + " + " + margin + " = " + row);
         int col = mouseX / (cardSize + margin);
-        System.out.println(mouseX + " / " + cardSize + " + " + margin + " = " + col);
 
-
-
-        // Verifica se a linha e coluna estão dentro dos limites do array
         if (row >= 0 && row < rows && col >= 0 && col < cols) {
             Card clickedCard = cards[row][col];
             if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
-                System.out.println(cards[row][col].getId());
-                handleClick(clickedCard); // Processa a lógica do clique
+                handleClick(clickedCard);
             }
         }
     }
