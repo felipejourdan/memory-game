@@ -112,6 +112,11 @@ public class Board implements MouseHandler {
             Timer timer2 = new Timer(500, f -> {
             if (checkVictory()) {
                 alert.showAlert("Você venceu!");
+                Timer timer3 = new Timer(2000, d -> {
+                    new Board(cols, rows, cardSize);
+                });
+                timer3.setRepeats(false);
+                timer3.start();
             } });
             timer2.setRepeats(false);
             timer2.start();
@@ -128,10 +133,11 @@ public class Board implements MouseHandler {
                     return false;
                 }
             }
-
         }
         return true;
     }
+
+
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
