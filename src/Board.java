@@ -8,8 +8,7 @@ import com.codeforall.online.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Board implements MouseHandler {
 
@@ -26,18 +25,24 @@ public class Board implements MouseHandler {
     int xMenu;
     int yMenu;
     Alert alert;
+    int attempt;
+    Text showAttempt;
 
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
         this.rows = rows;
-        this.cards = new Card[rows][cols];
+        cards = new Card[rows][cols];
         this.cardSize = cardSize;
-        this.mouse = new Mouse(this);
+        mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
-        this.xMenu = margin;
-        this.yMenu = (int)(rows * (cardSize + margin) + margin);
-        alert = new Alert(xMenu, yMenu);
+        xMenu = margin;
+        yMenu = (int)(rows * (cardSize + margin) + margin);
+        alert = new Alert(xMenu + margin, yMenu, 500);
+        attempt = 0;
+        showAttempt = new Text(xMenu + margin, yMenu + (margin * 2), "Attempts: " + attempt);
+        showAttempt.draw();
+
 
         init();
     }
@@ -98,7 +103,7 @@ public class Board implements MouseHandler {
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
             if (firstCard.getId() == secondCard.getId()) {
-                alert.showAlert("Par encontrado!");
+                alert.showAlert("Par encontrado!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
             } else {
@@ -107,11 +112,14 @@ public class Board implements MouseHandler {
                 firstCard.setRevealed(false);
                 secondCard.setRevealed(false);
             }
+            attempt++;
+            showAttempt.setText("Attempts: " + attempt);
+            showAttempt.draw();
             firstCard = null;
             secondCard = null;
             Timer timer2 = new Timer(500, f -> {
             if (checkVictory()) {
-                alert.showAlert("Você venceu!");
+                alert.showAlert("Você venceu!", 2000);
                 Timer timer3 = new Timer(2000, d -> {
                     new Board(cols, rows, cardSize);
                 });
