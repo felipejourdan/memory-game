@@ -6,6 +6,8 @@ import com.codeforall.online.simplegraphics.mouse.MouseEventType;
 import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
+import java.awt.desktop.ScreenSleepEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,6 +29,8 @@ public class Board implements MouseHandler {
     Alert alert;
     int attempt;
     Text showAttempt;
+    int scorePoints;
+    Score scoreTable = new Score();
 
 
     public Board(int cols, int rows, int cardSize) {
@@ -42,9 +46,10 @@ public class Board implements MouseHandler {
         attempt = 0;
         showAttempt = new Text(xMenu + margin, yMenu + (margin * 2), "Attempts: " + attempt);
         showAttempt.draw();
-
+        scorePoints = 1000;
 
         init();
+
     }
 
     public void init(){
@@ -100,6 +105,21 @@ public class Board implements MouseHandler {
         }
     }
 
+/*
+    public int pointSystem(int point){
+        //exceção a cabeça
+        if(getPoints() <= 0){
+            System.out.println("no points avaiable! game over!");
+        }
+
+    }
+
+    public int getPoints(){
+        return points;
+    }
+*/
+
+
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
             if (firstCard.getId() == secondCard.getId()) {
@@ -142,31 +162,38 @@ public class Board implements MouseHandler {
                 }
             }
         }
+        /*scoreTable.writeScore()*/
         return true;
     }
 
 
 
     @Override
-    public void mouseClicked(MouseEvent mouseEvent) {
-        if (menuIsOn) {
-            menuIsOn = false;
-            startGame(cardSize);
-        }
+        public void mouseClicked(MouseEvent mouseEvent) {
+            if ((mouseEvent.getX() >= 114 && mouseEvent.getX() <= 338) && (mouseEvent.getY() >= 410 && mouseEvent.getY() <= 435)) {
 
-        int mouseX = (int) mouseEvent.getX();
-        int mouseY = (int) mouseEvent.getY() - 20;
-
-        int row = mouseY / (cardSize + margin);
-        int col = mouseX / (cardSize + margin);
-
-        if (row >= 0 && row < rows && col >= 0 && col < cols) {
-            Card clickedCard = cards[row][col];
-            if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
-                handleClick(clickedCard);
+                if (menuIsOn) {
+                    menuIsOn = false;
+                    startGame(cardSize);
+                }
             }
+
+                System.out.println(mouseEvent.getX() + " " + mouseEvent.getY());
+
+                int mouseX = (int) mouseEvent.getX();
+                int mouseY = (int) mouseEvent.getY() - 20;
+
+                int row = mouseY / (cardSize + margin);
+                int col = mouseX / (cardSize + margin);
+
+                if (row >= 0 && row < rows && col >= 0 && col < cols) {
+                    Card clickedCard = cards[row][col];
+                    if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
+                        handleClick(clickedCard);
+                    }
+                }
         }
-    }
+
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {

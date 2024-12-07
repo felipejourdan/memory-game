@@ -1,15 +1,4 @@
-import com.codeforall.online.simplegraphics.graphics.Color;
-import com.codeforall.online.simplegraphics.graphics.Rectangle;
-import com.codeforall.online.simplegraphics.mouse.Mouse;
-import com.codeforall.online.simplegraphics.mouse.MouseEvent;
-import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 import com.codeforall.online.simplegraphics.pictures.Picture;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class Card {
 
