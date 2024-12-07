@@ -3,20 +3,25 @@ import java.util.ArrayList;
 
 public class Score{
 
-    private ArrayList<String> scores = new ArrayList<>();
+    private final ArrayList<String> scores = new ArrayList<>();
     private BufferedReader bufferedReader;
+    private FileWriter fWriter = null;
+    private BufferedWriter bWriter = null;
+    /*private Board board = new Board();*/
 
     public Score(){
         readScore();
         writeScore();
     }
 
+    public void scoreGetter(String score){
+        scores.add(score);
+    }
+
     public void writeScore(){
         /*FileWriter fWriter = new FileWriter("resources/scores.txt");
         BufferedWriter bWriter = new BufferedWriter(fWriter);*/
 
-        FileWriter fWriter = null;
-        BufferedWriter bWriter = null;
         try{
             fWriter = new FileWriter("resources/scores.txt");
             bWriter = new BufferedWriter(fWriter);
@@ -29,13 +34,15 @@ public class Score{
         }finally{
             try{
                 if(bWriter != null){
+                    /*bWriter.flush();*/
                     bWriter.close();
                 }
                 if(fWriter != null){
+                    /*fWriter.flush();*/
                     fWriter.close();
                 }
             }catch(IOException e){
-                System.err.println("could not close the writers" + e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }

@@ -6,8 +6,6 @@ import com.codeforall.online.simplegraphics.mouse.MouseEventType;
 import com.codeforall.online.simplegraphics.mouse.MouseHandler;
 import com.codeforall.online.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
-import java.awt.desktop.ScreenSleepEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -30,8 +28,11 @@ public class Board implements MouseHandler {
     int attempt;
     Text showAttempt;
     int scorePoints;
+    Text showScorePoints;
     Score scoreTable = new Score();
 
+    public Board(){
+    };
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -47,6 +48,8 @@ public class Board implements MouseHandler {
         showAttempt = new Text(xMenu + margin, yMenu + (margin * 2), "Attempts: " + attempt);
         showAttempt.draw();
         scorePoints = 1000;
+        showScorePoints = new Text(xMenu + margin, yMenu + (margin * 4), "Your score is: " + scorePoints);
+        showScorePoints.draw();
 
         init();
 
@@ -105,20 +108,35 @@ public class Board implements MouseHandler {
         }
     }
 
-/*
-    public int pointSystem(int point){
-        //exceção a cabeça
-        if(getPoints() <= 0){
-            System.out.println("no points avaiable! game over!");
-        }
+    // [TODO] descobrir pq esta dando erro stackoverflow e como implementar corretamente e enviar para a classe Score.java
+    public void scoreSend(){
 
+        String scoreString = String.valueOf(getPoints());
+        if(checkVictory()){
+            scoreTable.scoreGetter(scoreString);
+        }
     }
 
     public int getPoints(){
-        return points;
+        return scorePoints;
     }
-*/
 
+    public boolean checkVictory() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(!cards[i][j].isMatched()) {
+                    return false;
+                }
+            }
+        }
+        /*if(getPoints() <= 0){
+            System.out.println("No more points left!! Game over!!");
+            scoreTable.readScore();
+        }
+        scoreTable.readScore();*/
+        scoreSend(); // [TODO] descobrir forma de implementar e enviar scores para a classe Score.java
+        return true;
+    }
 
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
@@ -126,15 +144,21 @@ public class Board implements MouseHandler {
                 alert.showAlert("Par encontrado!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
+                scorePoints += 20;
+                System.out.println(scorePoints);
             } else {
                 firstCard.picture.load(firstCard.backImage());
                 secondCard.picture.load(secondCard.backImage());
                 firstCard.setRevealed(false);
                 secondCard.setRevealed(false);
+                scorePoints -= 10;
+                System.out.println(scorePoints);
             }
             attempt++;
             showAttempt.setText("Attempts: " + attempt);
             showAttempt.draw();
+            showScorePoints.setText("Your score is: " + scorePoints);
+            showScorePoints.draw();
             firstCard = null;
             secondCard = null;
             Timer timer2 = new Timer(500, f -> {
@@ -153,19 +177,6 @@ public class Board implements MouseHandler {
         timer.start();
     }
 
-    public boolean checkVictory() {
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if(!cards[i][j].isMatched()) {
-                    return false;
-                }
-            }
-        }
-        /*scoreTable.writeScore()*/
-        return true;
-    }
-
 
 
     @Override
@@ -178,7 +189,7 @@ public class Board implements MouseHandler {
                 }
             }
 
-                System.out.println(mouseEvent.getX() + " " + mouseEvent.getY());
+                /*System.out.println(mouseEvent.getX() + " " + mouseEvent.getY());*/
 
                 int mouseX = (int) mouseEvent.getX();
                 int mouseY = (int) mouseEvent.getY() - 20;
