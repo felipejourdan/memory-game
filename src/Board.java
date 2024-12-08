@@ -31,9 +31,6 @@ public class Board implements MouseHandler {
     Text showScorePoints;
     Score scoreTable = new Score();
 
-    public Board(){
-    };
-
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
         this.rows = rows;
@@ -108,13 +105,9 @@ public class Board implements MouseHandler {
         }
     }
 
-    // [TODO] descobrir pq esta dando erro stackoverflow e como implementar corretamente e enviar para a classe Score.java
     public void scoreSend(){
-
         String scoreString = String.valueOf(getPoints());
-        if(checkVictory()){
-            scoreTable.scoreGetter(scoreString);
-        }
+        scoreTable.scoreAdd(scoreString);
     }
 
     public int getPoints(){
@@ -134,9 +127,10 @@ public class Board implements MouseHandler {
             scoreTable.readScore();
         }
         scoreTable.readScore();*/
-        scoreSend(); // [TODO] descobrir forma de implementar e enviar scores para a classe Score.java
+        scoreSend();
         return true;
     }
+
 
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
@@ -145,14 +139,14 @@ public class Board implements MouseHandler {
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
                 scorePoints += 20;
-                System.out.println(scorePoints);
+                /*System.out.println(scorePoints);*/
             } else {
                 firstCard.picture.load(firstCard.backImage());
                 secondCard.picture.load(secondCard.backImage());
                 firstCard.setRevealed(false);
                 secondCard.setRevealed(false);
                 scorePoints -= 10;
-                System.out.println(scorePoints);
+                /*System.out.println(scorePoints);*/
             }
             attempt++;
             showAttempt.setText("Attempts: " + attempt);

@@ -7,20 +7,18 @@ public class Score{
     private BufferedReader bufferedReader;
     private FileWriter fWriter = null;
     private BufferedWriter bWriter = null;
-    /*private Board board = new Board();*/
 
     public Score(){
         readScore();
-        writeScore();
     }
 
-    public void scoreGetter(String score){
+    public void scoreAdd(String score){
         scores.add(score);
+        System.out.println(scores); //debug
+        writeScore(); // insere os valores no txt ter sido feito o add no arraylist
     }
 
     public void writeScore(){
-        /*FileWriter fWriter = new FileWriter("resources/scores.txt");
-        BufferedWriter bWriter = new BufferedWriter(fWriter);*/
 
         try{
             fWriter = new FileWriter("resources/scores.txt");
