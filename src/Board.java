@@ -44,7 +44,7 @@ public class Board implements MouseHandler {
         attempt = 0;
         showAttempt = new Text(xMenu + margin, yMenu + (margin * 2), "Attempts: " + attempt);
         showAttempt.draw();
-        scorePoints = 1000;
+        scorePoints = 100;
         showScorePoints = new Text(xMenu + margin, yMenu + (margin * 4), "Your score is: " + scorePoints);
         showScorePoints.draw();
 
@@ -138,7 +138,7 @@ public class Board implements MouseHandler {
                 alert.showAlert("Par encontrado!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
-                scorePoints += 20;
+                scorePoints += 10;
                 /*System.out.println(scorePoints);*/
             } else {
                 firstCard.picture.load(firstCard.backImage());
@@ -169,6 +169,15 @@ public class Board implements MouseHandler {
         });
         timer.setRepeats(false);
         timer.start();
+        if (scorePoints == 0){
+            alert.showAlert("No more points left!! Game over!!", 500);
+            Timer timer3 = new Timer(500, d -> {
+                new Board(cols, rows, cardSize);
+            });
+            timer3.setRepeats(false);
+            timer3.start();
+            menuIsOn = true;
+        }
     }
 
 
