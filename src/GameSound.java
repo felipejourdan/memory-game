@@ -35,6 +35,18 @@ Clip click;
         }
     }
 
+    public void cheatSound() {
+        File cheatSound = new File("resources/cheatSound.wav");
+
+        try{
+            Clip cheatSoundInit = AudioSystem.getClip();
+            cheatSoundInit.open(AudioSystem.getAudioInputStream(cheatSound));
+            cheatSoundInit.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void victorySound() {
         File sound = new File("resources/victorySound.wav");
 

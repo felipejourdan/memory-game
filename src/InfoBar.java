@@ -44,4 +44,9 @@ public class InfoBar {
         showAttempt.delete();
         showScorePoints.delete();
     }
+
+    public void cheatActivated() {
+        scorePoints += 15;
+        showScorePoints.setText("Your score is: " + scorePoints);
+    }
 }

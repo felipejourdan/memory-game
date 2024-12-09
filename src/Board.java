@@ -1,4 +1,8 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.keyboard.Keyboard;
+import com.codeforall.online.simplegraphics.keyboard.KeyboardEvent;
+import com.codeforall.online.simplegraphics.keyboard.KeyboardEventType;
+import com.codeforall.online.simplegraphics.keyboard.KeyboardHandler;
 import com.codeforall.online.simplegraphics.mouse.Mouse;
 import com.codeforall.online.simplegraphics.mouse.MouseEvent;
 import com.codeforall.online.simplegraphics.mouse.MouseEventType;
@@ -9,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Board implements MouseHandler {
+public class Board implements MouseHandler, KeyboardHandler {
 
     private int cols; // coluna
     private int rows; // linha
@@ -19,6 +23,7 @@ public class Board implements MouseHandler {
     private int cardSize;
     private int margin = 10;
     private Mouse mouse;
+    private Keyboard keyboard;
     private Picture menu;
     private boolean menuIsOn = false;
     int xInfoBar;
@@ -34,12 +39,23 @@ public class Board implements MouseHandler {
         this.rows = rows;
         this.cardSize = cardSize;
         cards = new Card[rows][cols];
-        mouse = new Mouse(this);
-        mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         xInfoBar = margin;
         yInfoBar = (int)(rows * (cardSize + margin) + margin);
         alert = new Alert(xInfoBar + margin, yInfoBar + (margin * 7), 500);
+        initMouseAndKeyboard();
         init();
+
+    }
+
+    public void initMouseAndKeyboard() {
+        mouse = new Mouse(this);
+        keyboard = new Keyboard(this);
+        mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
+
+        KeyboardEvent pressEvent = new KeyboardEvent();
+        pressEvent.setKey(KeyboardEvent.KEY_SPACE);
+        pressEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(pressEvent);
 
     }
 
@@ -216,6 +232,16 @@ public class Board implements MouseHandler {
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void keyPressed(KeyboardEvent keyboardEvent) {
+            infoBar.cheatActivated();
+            gameSound.cheatSound();
+    }
+
+    @Override
+    public void keyReleased(KeyboardEvent keyboardEvent) {
     }
 }
 
