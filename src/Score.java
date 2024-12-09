@@ -3,6 +3,10 @@ import java.util.ArrayList;
 
 public class Score{
 
+    public ArrayList<String> getScores() {
+        return scores;
+    }
+
     private final ArrayList<String> scores = new ArrayList<>();
     private BufferedReader bufferedReader;
     private FileWriter fWriter = null;

@@ -37,7 +37,7 @@ public class Board implements MouseHandler {
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         xInfoBar = margin;
         yInfoBar = (int)(rows * (cardSize + margin) + margin);
-        alert = new Alert(xInfoBar + margin, yInfoBar, 500);
+        alert = new Alert(xInfoBar + margin, yInfoBar + (margin * 7), 500);
         init();
 
     }
@@ -71,7 +71,7 @@ public class Board implements MouseHandler {
         }
 
         menu.delete();
-        this.infoBar = new InfoBar(xInfoBar, yInfoBar, margin, cardSize, cols, rows);
+        this.infoBar = new InfoBar(xInfoBar, yInfoBar, margin, cardSize, cols, rows, scoreTable);
         gameSound.menuMusicOff();
 
     }
@@ -127,14 +127,14 @@ public class Board implements MouseHandler {
                 alert.showAlert("Cards match!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
-                infoBar.scorePoints += 10;
+                infoBar.scorePoints += 50;
                 /*System.out.println(scorePoints);*/
             } else {
                 firstCard.picture.load(firstCard.backImage());
                 secondCard.picture.load(secondCard.backImage());
                 firstCard.setRevealed(false);
                 secondCard.setRevealed(false);
-                infoBar.scorePoints -= 10;
+                infoBar.scorePoints -= 65;
                 /*System.out.println(scorePoints);*/
             }
             infoBar.attempt++;
