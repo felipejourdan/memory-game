@@ -197,6 +197,7 @@ public class Board implements MouseHandler {
                     Card clickedCard = cards[row][col];
                     if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
                         handleClick(clickedCard);
+                        gameSound.clickSound();
                     }
                 }
         }

@@ -3,21 +3,34 @@ import javax.sound.sampled.Clip;
 import java.io.File;
 
 public class GameSound {
-Clip clip;
+Clip musicMenu;
+Clip click;
 
     public void menuMusicOn(){
-        File music = new File("sample-file-3.wav");
+        File music = new File("resources/sample-file-3.wav");
             try{
-                clip = AudioSystem.getClip();
-                clip.open(AudioSystem.getAudioInputStream(music));
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                musicMenu = AudioSystem.getClip();
+                musicMenu.open(AudioSystem.getAudioInputStream(music));
+                musicMenu.start();
+                musicMenu.loop(Clip.LOOP_CONTINUOUSLY);
             } catch (Exception e){
                 e.printStackTrace();
             }
         }
 
     public void menuMusicOff() {
-        clip.stop();
+        musicMenu.stop();
+    }
+
+    public void clickSound() {
+        File sound = new File("resources/cardClick.wav");
+
+        try{
+            click = AudioSystem.getClip();
+            click.open(AudioSystem.getAudioInputStream(sound));
+            click.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
