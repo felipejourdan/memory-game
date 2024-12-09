@@ -1,9 +1,11 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 import com.codeforall.online.simplegraphics.graphics.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class InfoBar {
     int attempt;
@@ -28,15 +30,34 @@ public class InfoBar {
         new Rectangle(xInfoBar, yInfoBar, (cardSize * cols + (margin * rows)),cardSize).draw();
         new Text(xInfoBar + (cardSize * 3), yInfoBar + margin, "Best scores").draw();
         showScoreTable(xInfoBar, yInfoBar, cardSize, margin);
+
     }
 
     public void showScoreTable(int xInfoBar, int yInfoBar, int cardSize, int margin) {
-        ArrayList listScores = scoreTable.getScores();
-        Collections.sort(listScores, Collections.reverseOrder());
+        ArrayList<String> listScores = scoreTable.getScores();
 
-        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 3), "1. " + listScores.get(0)).draw();
-        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 5), "2. " + listScores.get(1)).draw();
-        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 7), "3. " + listScores.get(2)).draw();
+        /// exceção a cabeça
+        if(listScores == null || listScores.size() < 3){
+            return;
+        }
+
+        /// Realiza a conversão de strings para inteiros, ordenando e convertendo de volta para string.
+
+        ArrayList<Integer> stringsToIntegers = new ArrayList<>();
+        for(String score : listScores){
+            stringsToIntegers.add(Integer.parseInt(score));
+        }
+
+        stringsToIntegers.sort(Collections.reverseOrder());
+
+        ArrayList<String> sortedScores = new ArrayList<>();
+        for(Integer score : stringsToIntegers){
+            sortedScores.add(score.toString());
+        }
+
+        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 3), "1. " + sortedScores.get(0)).draw();
+        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 5), "2. " + sortedScores.get(1)).draw();
+        new Text(xInfoBar + (cardSize * 3) + margin, yInfoBar + (margin * 7), "3. " + sortedScores.get(2)).draw();
 
     }
 
