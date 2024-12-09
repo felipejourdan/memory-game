@@ -1,5 +1,6 @@
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.io.File;
 
 public class GameSound {
@@ -44,5 +45,22 @@ Clip click;
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void easyModeActivatedSound() {
+        File sound = new File("resources/easyMode.wav");
+        menuMusicOff();
+        try{
+            Clip easyModeSound = AudioSystem.getClip();
+            easyModeSound.open(AudioSystem.getAudioInputStream(sound));
+            easyModeSound.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Timer timer = new Timer(1000, f -> {
+        menuMusicOn();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }

@@ -13,11 +13,15 @@ public class InfoBar {
     Score scoreTable;
 
 
-    public InfoBar(int xInfoBar, int yInfoBar, int margin, int cardSize, int cols, int rows, Score scoreTable) {
+    public InfoBar(int xInfoBar, int yInfoBar, int margin, int cardSize, int cols, int rows, Score scoreTable, boolean easyMode) {
         attempt = 0;
         showAttempt = new Text(xInfoBar + margin, yInfoBar + (margin), "Attempts: " + attempt);
         showAttempt.draw();
-        scorePoints = 1000;
+        if (easyMode) {
+            scorePoints = 1500;
+        } else {
+            scorePoints = 1000;
+        }
         showScorePoints = new Text(xInfoBar + margin, yInfoBar + (margin * 3), "Your score is: " + scorePoints);
         showScorePoints.draw();
         this.scoreTable = scoreTable;

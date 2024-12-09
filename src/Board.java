@@ -27,6 +27,7 @@ public class Board implements MouseHandler {
     InfoBar infoBar;
     Score scoreTable = new Score();
     GameSound gameSound = new GameSound();
+    boolean easyMode = false;
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
@@ -71,7 +72,7 @@ public class Board implements MouseHandler {
         }
 
         menu.delete();
-        this.infoBar = new InfoBar(xInfoBar, yInfoBar, margin, cardSize, cols, rows, scoreTable);
+        this.infoBar = new InfoBar(xInfoBar, yInfoBar, margin, cardSize, cols, rows, scoreTable, easyMode);
         gameSound.menuMusicOff();
 
     }
@@ -96,6 +97,7 @@ public class Board implements MouseHandler {
             }
         }
     }
+
 
     public void scoreSend(){
         String scoreString = String.valueOf(getPoints());
@@ -173,22 +175,35 @@ public class Board implements MouseHandler {
 
     @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-            if ((mouseEvent.getX() >= 114 && mouseEvent.getX() <= 338) && (mouseEvent.getY() >= 410 && mouseEvent.getY() <= 435)) {
+    //        System.out.println("X: " + mouseEvent.getX());
+    //        System.out.println("Y: " + mouseEvent.getY());
 
-                if (menuIsOn) {
-                    menuIsOn = false;
-                    startGame();
+                //easyMode
+                if ((mouseEvent.getX() >= 160 && mouseEvent.getX() <= 186)
+                        && (mouseEvent.getY() >= 285 && mouseEvent.getY() <= 310) ||
+                        (mouseEvent.getX() >= 271 && mouseEvent.getX() <= 298)
+                                && (mouseEvent.getY() >= 316 && mouseEvent.getY() <= 340)) {
+                    if (!easyMode) {
+                    easyMode = true;
+                    gameSound.easyModeActivatedSound();
+                    }
                 }
-            }
 
-                /*System.out.println(mouseEvent.getX() + " " + mouseEvent.getY());*/
+                //start game
+                if ((mouseEvent.getX() >= 114 && mouseEvent.getX() <= 338)
+                        && (mouseEvent.getY() >= 410 && mouseEvent.getY() <= 435)) {
 
+                    if (menuIsOn) {
+                        menuIsOn = false;
+                        startGame();
+                    }
+                }
+
+                //cardClick
                 int mouseX = (int) mouseEvent.getX();
                 int mouseY = (int) mouseEvent.getY() - 20;
-
                 int row = mouseY / (cardSize + margin);
                 int col = mouseX / (cardSize + margin);
-
                 if (row >= 0 && row < rows && col >= 0 && col < cols) {
                     Card clickedCard = cards[row][col];
                     if (clickedCard != null && clickedCard.contains(mouseX, mouseY)) {
