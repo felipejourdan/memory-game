@@ -1,5 +1,4 @@
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
-import com.codeforall.online.simplegraphics.graphics.Text;
 import com.codeforall.online.simplegraphics.mouse.Mouse;
 import com.codeforall.online.simplegraphics.mouse.MouseEvent;
 import com.codeforall.online.simplegraphics.mouse.MouseEventType;
@@ -22,23 +21,23 @@ public class Board implements MouseHandler {
     private Mouse mouse;
     private Picture menu;
     private boolean menuIsOn = false;
-    int xMenu;
-    int yMenu;
+    int xInfoBar;
+    int yInfoBar;
     Alert alert;
     InfoBar infoBar;
     Score scoreTable = new Score();
+    GameSound gameSound = new GameSound();
 
     public Board(int cols, int rows, int cardSize) {
         this.cols = cols;
         this.rows = rows;
-        cards = new Card[rows][cols];
         this.cardSize = cardSize;
+        cards = new Card[rows][cols];
         mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
-        xMenu = margin;
-        yMenu = (int)(rows * (cardSize + margin) + margin);
-        alert = new Alert(xMenu + margin, yMenu, 500);
-        this.infoBar = new InfoBar(xMenu, yMenu, margin);
+        xInfoBar = margin;
+        yInfoBar = (int)(rows * (cardSize + margin) + margin);
+        alert = new Alert(xInfoBar + margin, yInfoBar, 500);
         init();
 
     }
@@ -47,10 +46,10 @@ public class Board implements MouseHandler {
         menu = new Picture(10, 10, "menu.png");
         menu.draw();
         menuIsOn = true;
+        gameSound.menuMusicOn();
     }
 
-    public void startGame(int cardSize) {
-
+    public void startGame() {
         ArrayList<Integer> cardIdList = new ArrayList<>();
 
         for(int i = 1; i <= (cols * rows) / 2; i++){
@@ -71,8 +70,10 @@ public class Board implements MouseHandler {
             }
         }
 
-        new Rectangle(xMenu, yMenu, (cardSize * cols + (margin * rows)),100).draw();
         menu.delete();
+        this.infoBar = new InfoBar(xInfoBar, yInfoBar, margin, cardSize, cols, rows);
+        gameSound.menuMusicOff();
+
     }
 
     public int getCols() {
@@ -180,7 +181,7 @@ public class Board implements MouseHandler {
 
                 if (menuIsOn) {
                     menuIsOn = false;
-                    startGame(cardSize);
+                    startGame();
                 }
             }
 
