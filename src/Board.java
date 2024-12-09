@@ -25,10 +25,7 @@ public class Board implements MouseHandler {
     int xMenu;
     int yMenu;
     Alert alert;
-    int attempt;
-    Text showAttempt;
-    int scorePoints;
-    Text showScorePoints;
+    InfoBar infoBar;
     Score scoreTable = new Score();
 
     public Board(int cols, int rows, int cardSize) {
@@ -41,13 +38,7 @@ public class Board implements MouseHandler {
         xMenu = margin;
         yMenu = (int)(rows * (cardSize + margin) + margin);
         alert = new Alert(xMenu + margin, yMenu, 500);
-        attempt = 0;
-        showAttempt = new Text(xMenu + margin, yMenu + (margin * 2), "Attempts: " + attempt);
-        showAttempt.draw();
-        scorePoints = 100;
-        showScorePoints = new Text(xMenu + margin, yMenu + (margin * 4), "Your score is: " + scorePoints);
-        showScorePoints.draw();
-
+        this.infoBar = new InfoBar(xMenu, yMenu, margin);
         init();
 
     }
@@ -111,7 +102,7 @@ public class Board implements MouseHandler {
     }
 
     public int getPoints(){
-        return scorePoints;
+        return infoBar.scorePoints;
     }
 
     public boolean checkVictory() {
@@ -127,6 +118,7 @@ public class Board implements MouseHandler {
             scoreTable.readScore();
         }
         scoreTable.readScore();*/
+        infoBar.resetInfobar();
         scoreSend();
         return true;
     }
@@ -138,21 +130,21 @@ public class Board implements MouseHandler {
                 alert.showAlert("Par encontrado!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
-                scorePoints += 10;
+                infoBar.scorePoints += 10;
                 /*System.out.println(scorePoints);*/
             } else {
                 firstCard.picture.load(firstCard.backImage());
                 secondCard.picture.load(secondCard.backImage());
                 firstCard.setRevealed(false);
                 secondCard.setRevealed(false);
-                scorePoints -= 10;
+                infoBar.scorePoints -= 10;
                 /*System.out.println(scorePoints);*/
             }
-            attempt++;
-            showAttempt.setText("Attempts: " + attempt);
-            showAttempt.draw();
-            showScorePoints.setText("Your score is: " + scorePoints);
-            showScorePoints.draw();
+            infoBar.attempt++;
+            infoBar.showAttempt.setText("Attempts: " + infoBar.attempt);
+            infoBar.showAttempt.draw();
+            infoBar.showScorePoints.setText("Your score is: " + infoBar.scorePoints);
+            infoBar.showScorePoints.draw();
             firstCard = null;
             secondCard = null;
             Timer timer2 = new Timer(500, f -> {
@@ -169,7 +161,7 @@ public class Board implements MouseHandler {
         });
         timer.setRepeats(false);
         timer.start();
-        if (scorePoints == 0){
+        if (infoBar.scorePoints == 0){
             alert.showAlert("No more points left!! Game over!!", 500);
             Timer timer3 = new Timer(500, d -> {
                 new Board(cols, rows, cardSize);

@@ -19,7 +19,6 @@ public class Score{
     }
 
     public void writeScore(){
-
         try{
             fWriter = new FileWriter("resources/scores.txt");
             bWriter = new BufferedWriter(fWriter);
@@ -46,6 +45,9 @@ public class Score{
     }
 
     public void readScore() {
+        if (!scores.isEmpty()){
+            return;
+        }
         try {
             bufferedReader = new BufferedReader(new FileReader("resources/scores.txt"));
 
