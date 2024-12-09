@@ -114,11 +114,7 @@ public class Board implements MouseHandler {
                 }
             }
         }
-        /*if(getPoints() <= 0){
-            System.out.println("No more points left!! Game over!!");
-            scoreTable.readScore();
-        }
-        scoreTable.readScore();*/
+        gameSound.victorySound();
         infoBar.resetInfobar();
         scoreSend();
         return true;
@@ -128,7 +124,7 @@ public class Board implements MouseHandler {
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
             if (firstCard.getId() == secondCard.getId()) {
-                alert.showAlert("Par encontrado!", 500);
+                alert.showAlert("Cards match!", 500);
                 firstCard.setMatched(true);
                 secondCard.setMatched(true);
                 infoBar.scorePoints += 10;
@@ -150,8 +146,8 @@ public class Board implements MouseHandler {
             secondCard = null;
             Timer timer2 = new Timer(500, f -> {
             if (checkVictory()) {
-                alert.showAlert("Você venceu!", 2000);
-                Timer timer3 = new Timer(2000, d -> {
+                alert.showAlert("You Win!", 3000);
+                Timer timer3 = new Timer(3500, d -> {
                     new Board(cols, rows, cardSize);
                 });
                 timer3.setRepeats(false);

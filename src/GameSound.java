@@ -33,4 +33,16 @@ Clip click;
             e.printStackTrace();
         }
     }
+
+    public void victorySound() {
+        File sound = new File("resources/victorySound.wav");
+
+        try{
+            Clip victorySound = AudioSystem.getClip();
+            victorySound.open(AudioSystem.getAudioInputStream(sound));
+            victorySound.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
