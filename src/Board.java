@@ -52,10 +52,18 @@ public class Board implements MouseHandler, KeyboardHandler {
         keyboard = new Keyboard(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
 
-        KeyboardEvent pressEvent = new KeyboardEvent();
-        pressEvent.setKey(KeyboardEvent.KEY_SPACE);
-        pressEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(pressEvent);
+        KeyboardEvent spacePressEvent = new KeyboardEvent();
+        spacePressEvent.setKey(KeyboardEvent.KEY_SPACE);
+        spacePressEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(spacePressEvent);
+
+        KeyboardEvent escapePressEvent = new KeyboardEvent();
+        escapePressEvent.setKey(KeyboardEvent.KEY_ESC);
+        escapePressEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(escapePressEvent);
+
+
+
 
     }
 
@@ -138,6 +146,9 @@ public class Board implements MouseHandler, KeyboardHandler {
         return true;
     }
 
+    public void exitGame() {
+        System.exit(0);
+    }
 
     public void isMatch() {
         Timer timer = new Timer(500, e -> {
@@ -238,12 +249,16 @@ public class Board implements MouseHandler, KeyboardHandler {
     public void keyPressed(KeyboardEvent keyboardEvent) {
             infoBar.cheatActivated();
             gameSound.cheatSound();
-    }
+           if (keyboardEvent.getKey() == KeyboardEvent.KEY_ESC) {
+               exitGame();
+           }}
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
+
     }
 }
+
 
 
 
