@@ -1,8 +1,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        Game game = new Game(2, 2, 50);
-        game.start();
+        Game game = new Game(4, 3, 100);
 
     }
 }
