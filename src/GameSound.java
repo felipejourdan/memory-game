@@ -8,7 +8,7 @@ Clip musicMenu;
 Clip click;
 
     public void menuMusicOn(){
-        File music = new File("resources/sample-file-3.wav");
+        File music = new File("resources/sounds/sample-file-3.wav");
             try{
                 musicMenu = AudioSystem.getClip();
                 musicMenu.open(AudioSystem.getAudioInputStream(music));
@@ -24,7 +24,7 @@ Clip click;
     }
 
     public void clickSound() {
-        File sound = new File("resources/cardClick.wav");
+        File sound = new File("resources/sounds/cardClick.wav");
 
         try{
             click = AudioSystem.getClip();
@@ -36,7 +36,7 @@ Clip click;
     }
 
     public void cheatSound() {
-        File cheatSound = new File("resources/cheatSound.wav");
+        File cheatSound = new File("resources/sounds/cheatSound.wav");
 
         try{
             Clip cheatSoundInit = AudioSystem.getClip();
@@ -48,7 +48,7 @@ Clip click;
     }
 
     public void victorySound() {
-        File sound = new File("resources/victorySound.wav");
+        File sound = new File("resources/sounds/victorySound.wav");
 
         try{
             Clip victorySound = AudioSystem.getClip();
@@ -60,7 +60,7 @@ Clip click;
     }
 
     public void easyModeActivatedSound() {
-        File sound = new File("resources/easyMode.wav");
+        File sound = new File("resources/sounds/easyMode.wav");
         menuMusicOff();
         try{
             Clip easyModeSound = AudioSystem.getClip();
